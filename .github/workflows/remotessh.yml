@@ -17,6 +17,6 @@ jobs:
                 username: ${{ secrets.SSH_USER }}
                 key: ${{ secrets.SSH_KEY }}
                 passphrase: ${{ secrets.SSH_PASSPHRASE }}
-                script_file: ./script.sh
+                script_path: ./script.sh
 
 
