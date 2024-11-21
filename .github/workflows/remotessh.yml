@@ -1,0 +1,22 @@
+name: Remote SSH
+
+on:
+    workflow_dispatch:
+
+jobs:
+    remote_ssh:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Execute remote SSH command
+          uses: appleboy/ssh-action@v0.1.5
+          with:
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USER }}
+                key: ${{ secrets.SSH_KEY }}
+                script: |
+                    echo "Hello, World!"
+
