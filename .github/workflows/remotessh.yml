@@ -17,6 +17,6 @@ jobs:
                 username: ${{ secrets.SSH_USER }}
                 key: ${{ secrets.SSH_KEY }}
                 passphrase: ${{ secrets.SSH_PASSPHRASE }}
-                script: |
-                    echo "Hello, World!"
+                script_file: ./script.sh
+
 
