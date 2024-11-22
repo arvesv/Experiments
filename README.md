@@ -4,9 +4,9 @@ My playground for testing/learning stuff
 
 ## The things I have tested
 
-- [x]  Using SSH to access remote hosts from the generic build agents [remotessh.yml](.github/workflows/remotessh.yml) 
+- [x]  Using SSH to access remote hosts from a [Github Actions script](.github/workflows/remotessh.yml) 
 
-- [x]  Multi architecture builds (arm64 and amdx64)
+- [x]  Multi architecture Docker builds (arm64 and amdx64) in a [GitHub Actions script](.github/workflows/docker-publish.yml)
 
-- [ ] Test GitHub releases and the "latest" tag
+- [x] Test GitHub releases, Docker build on Git tags, what should the latest point to. [Find a methodology](docs/releasestags.md)
 
