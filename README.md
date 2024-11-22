@@ -10,3 +10,5 @@ My playground for testing/learning stuff
 
 - [x] Test GitHub releases, Docker build on Git tags, what should the latest point to. [Find a methodology](docs/releasestags.md)
 
+- [ ] Cleanup old containers from the registry
+
