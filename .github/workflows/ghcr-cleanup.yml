@@ -1,0 +1,32 @@
+name: GHCR Cleanup
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Runs every Sunday at midnight
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Login to GitHub Container Registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: List and delete old images
+      run: |
+        REPO=ghcr.io/${{ github.repository }}
+        IMAGES=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://ghcr.io/v2/${{ github.repository }}/tags/list" | jq -r '.tags[]')
+        for IMAGE in $IMAGES; do
+            CREATED_AT=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://ghcr.io/v2/${{ github.repository }}/manifests/$IMAGE" | jq -r '.history[0].v1Compatibility' | jq -r '.created')
+            CREATED_AT_TIMESTAMP=$(date -d "$CREATED_AT" +%s)
+            CURRENT_TIMESTAMP=$(date +%s)
+            AGE=$(( (CURRENT_TIMESTAMP - CREATED_AT_TIMESTAMP) / 86400 ))
+            if [ $AGE -gt 30 ]; then
+                echo "Deleting image $IMAGE (created $AGE days ago)"
+                curl -X DELETE -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://ghcr.io/v2/${{ github.repository }}/manifests/$IMAGE"
+            fi
+        done
